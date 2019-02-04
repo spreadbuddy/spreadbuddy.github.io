@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<title>Spreddy &mdash; Debate Speech Drill Aid</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="normalize.css">
+	<link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&amp;subset=devanagari,latin-ext" rel="stylesheet">
+	<style>
+	* {
+		box-sizing: border-box;
+		line-height: 1.25;
+		overflow-clip-box: padding-box !important;
+	}
+	html, body {
+		font-family: "Poppins", "Verdana", sans-serif;
+		margin: 0;
+		background-color: #546E7A;
+		color: #212121;
+		transition: background-color 1s ease-in-out;
+		overflow: visible;
+		width: 100vw;
+		position: relative;
+	}
+	section {
+		padding: 0 1rem;
+	}
+	#splash-screen {
+		background-color: black;
+		background-image:
+			linear-gradient(to bottom, transparent 0, transparent 100vh, white 100vh),
+			url("hero.jpg");
+		background-size: 100% 100%, auto 100vh;
+		background-position: center top, center top;
+		background-repeat: no-repeat, no-repeat;
+	}
+	#main-screen {
+		background-image:
+			linear-gradient(to bottom, transparent 0, transparent 100vh, white 100vh);
+		background-size: 100% 100%;
+		background-position: center top;
+		background-repeat: no-repeat;
+	}
+	.flex {
+		display: flex;
+		align-items: stretch;
+		justify-content: space-evenly;
+		flex-direction: column;
+		height: 100vh;
+	}
+	.container {
+		max-width: 750px;
+		margin: 0 auto;
+	}
+	p {
+		margin: 0;
+	}
+	p+p {
+		padding-top: 1rem;
+	}
+	#splash-screen-bottom, #main-screen-bottom {
+		padding: 3rem 0;
+	}
+	h1 {
+		margin: 0 0 3rem 0;
+		font-size: 3rem;
+		font-weight: normal;
+	}
+	h1, h2, h3 {
+		font-weight: normal;
+	}
+	h2 {
+		margin: 3rem 0 1rem 0;
+	}
+	h2, h3 {
+		font-size: 2rem;
+	}
+	h3, h4 {
+		margin: 0 0 1rem 0;
+	}
+	h4 {
+		font-weight: bold;
+	}
+	.text {
+		margin: -0.125em 0;
+		display: block;
+	}
+	.button {
+		background-color: #E64A19;
+		box-shadow: inset 0 0.5rem 0.5rem -0.5rem #FB8C00;
+		display: inline-block;
+		border: solid #FB8C00;
+		border-width: 1px 1px 2px 1px;
+	}
+	.big, h4 {
+		font-size: 1.25rem;
+	}
+	.scroller {
+		height: 100vh;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		overflow-y: scroll;
+		overflow-x: hidden;
+		transition: left 0.5s ease-in;
+	}
+	#splash-panel {
+		z-index: 100;
+	}
+	#main-screen-top, #splash-screen-top, .button {
+		color: white;
+	}
+	textarea, input[type='number'] {
+		resize: none;
+		width: 100%;
+		flex-grow: 1;
+		margin-bottom: 1rem;
+		border: solid #212121;
+		border-width: 1px 1px 2px 1px;
+		box-shadow: inset 0 0.5rem 0.5rem -0.5rem black;
+	}
+	.button, textarea, .module-unit, input[type='number'] {
+		border-radius: 0.5rem;
+		padding: 1em 1.5em;
+	}
+	#start-button {
+		margin: 1rem 0 3rem 0;
+	}
+	.module-unit {
+		border: solid #CFD8DC;
+		border-width: 1px 1px 2px 1px;
+		background-color: #ECEFF1;
+		box-shadow: inset 0 0.5rem 0.5rem -0.5rem white;
+		margin-left: -1.5rem;
+		margin-right: -1.5rem;
+		margin-top: 1rem;
+		margin-bottom: 1rem;
+	}
+	.module-unit+.module-unit {
+		margin-bottom: 0;
+	}
+	aside {
+		width: 25vw;
+		padding: 0 5rem;
+	}
+	article {
+		position: absolute;
+		left: -9999px;
+		right: -9999px;
+		top: 50vh;
+		margin-top: -0.625em !important;
+		z-index: 50;
+		text-shadow: 0 0 1px #212121, 0 0 1rem #212121;
+	}
+	progress {
+		width: 100%;
+		border: solid #212121;
+		border-width: 1px 1px 2px 1px;
+		height: 1rem;
+		-webkit-appearance: none;
+		appearance: none;
+		border-radius: 999px;
+		overflow: hidden;
+		background-color: #546E7A;
+	}
+	progress::-webkit-progress-bar {
+  	box-shadow: inset 0 0.5rem 0.5rem -0.5rem black;
+		background-color: #546E7A;
+	}
+	progress::-webkit-progress-value {
+	  box-shadow: inset 0 -2px 0 0 #FB8C00, inset 0 0 0 1px #FB8C00, inset 0 0.5rem 0.5rem -0.5rem #FB8C00, 0 0 0.5rem 0 black;
+	  background-color: #E64A19;
+	  border-radius: 999px;
+	}
+	progress::-moz-progress-bar {
+	  box-shadow: inset 0 -2px 0 0 #FB8C00, inset 0 0 0 1px #FB8C00, inset 0 0.5rem 0.5rem -0.5rem #FB8C00, 0 0 0.5rem 0 black;
+	  background-color: #E64A19;
+	  border-radius: 999px;
+	}
+	input {
+		width: 100%;
+		margin-bottom: 1rem;
+		display: inline-block;
+	}
+	input[type='number'] {
+		width: calc(100% - 2rem);
+		padding: 0.5rem 1rem !important;
+		margin-left: 2rem;
+		margin-top: 0.5rem;
+	}
+	small {
+		display: block;
+		margin-left: 1rem;
+		color: #546E7A;
+	}
+	html body [hidden] {
+		display: none !important;
+	}
+	article {
+		text-align: center;
+	}
+	#followed-by {
+		text-align: left;
+		font-size: 50%;
+		opacity: 0.75;
+		position: absolute;
+		left: 0;
+		width: 99999px;
+		top: 50vh;
+		margin-top: -0.625em !important;
+		z-index: 40;
+	}
+	#following {
+		text-align: right;
+		font-size: 50%;
+		opacity: 0.75;
+		position: absolute;
+		width: 99999px;
+		left: calc(100vw - 99999px);
+		top: 50vh;
+		margin-top: -0.625em !important;
+		z-index: 40;
+	}
+	.spacer {
+		height: 1rem;
+	}
+	hr {
+		margin: 1rem -0.5rem;
+		height: 1px;
+		border-radius: calc(100% / 3);
+		background-color: #546E7A;
+		border: none;
+	}
+	.last {
+		margin-bottom: 0 !important;
+	}
+	#header {
+		padding: 1rem 0;
+	}
+	#textbox-wrapper {
+		font-size: 5.6568542495rem;
+		flex-grow: 1;
+		color: white;
+	}
+	#scroll-pop {
+		position: fixed;
+		z-index: 1000;
+		right: 1rem;
+		bottom: 0.5rem;
+		height: 2rem;
+		opacity: 0.5;
+		animation: bounce 1s ease-in-out infinite;
+		transition: opacity 1s ease-in-out;
+	}
+	@keyframes bounce {
+		0% {
+			bottom: 0.5rem;
+		}
+		30% {
+			bottom: 1rem;
+		}
+		40% {
+			bottom: 0.5rem;
+		}
+	}
+	</style>
+</head>
+<body>
+	<img src="scroll-indicator.png" id="scroll-pop">
+	<main class="scroller" id="splash-panel">
+		<section id="splash-screen">
+			<div id="splash-screen-top" class="container flex">
+				<div id="lead">
+					<h1>
+						<span class="text">
+							<strong>Spreddy</strong> &mdash; Debate Speech Drill Aid
+						</span>
+					</h1>
+					<p class="big">
+						<span class="text">
+							Use <i>Spreddy</i> to get ready to spead faster like a pro debate master!
+						</span>
+					</p>
+				</div>
+				<div class="proceed">
+					<a class="button big" id="go-button">
+						<span class="text">Let's Go!</span>
+					</a>
+				</div>
+			</div>
+			<div id="splash-screen-bottom" class="container">
+				<p>
+					<span class="text">
+						&copy; Copyright 2019 Spreddy&trade;
+					</span>
+				</p>
+			</div>
+		</section>
+	</main>
+	<main class="scroller" id="main-panel">
+		<section id="main-screen">
+			<div class="container flex" id="speech-player" hidden>
+				<div id="header">
+					<progress value="0" max="" min="0"></progress>
+				</div>
+				<div id="textbox-wrapper">
+					<aside class="text" id="followed-by"></aside>
+					<article class="text"></article>
+					<aside class="text" id="following"></aside>
+				</div>
+			</div>
+			<div class="container flex" id="main-screen-top">
+				<h2>
+					<span class="text">
+						Copy your case file &amp; paste it here.
+					</span>
+				</h2>
+				<textarea placeholder="I got hoes, calling a young nibba phone...">
+Structural violence refers to systematic ways in which social structures harm or otherwise disadvantage individuals.  Structural violence is subtle, often invisible, and often has no one specific person who can (or will) be held responsible (in contrast to behavioral violence).  I also hold that behavioral violence and structural violence can intertwine — some of the easiest examples of structural violence involve police, military, or other state powers committing violent acts; of course one can blame the individual soldier, but the factors that lead to a soldier killing a civilian are far more complex than that explanation would imply.  Let me quote Dr. Paul Farmer,
+
+“Structural violence is one way of describing social arrangements that put individuals and populations in harm’s way… The arrangements are structural because they are embedded in the political and economic organization of our social world; they are violent because they cause injury to people … neither culture nor pure individual will is at fault; rather, historically given (and often economically driven) processes and forces conspire to constrain individual agency. Structural violence is visited upon all those whose social status denies them access to the fruits of scientific and social progress.”
+
+Lots of good material has been written directly and indirectly on structural violence, most notably (in my opinion) by Dr. Farmer.  I recently came across this 2001 article that does a great job briefly summarizing some forms of American structural violence.  If you’re looking to dive right in to academic texts, I’d start with Pathologies of Power or Infections and Inequalities; structural violence is a central theme of both. These are reasonably academic works, however, so I think any reader should be aware of that. For an easier read that doesn’t specifically define structural violence (but contains lots of it), I would suggest (Dr. Farmer’s biography) Mountains Beyond Mountains by Pulitzer winner Tracy Kidder. In all of these books, structural violence is being viewed primarily through the lens of health. One can view it in many other ways, but my interests often focus on health.
+
+One key aspect of structural violence is that it is often hard to see.  Even more difficult than identifying structural violence is assigning culpability.  When a baby dies of malnutrition, or from a vaccine-preventable disease, who should we blame?
+
+Structural violence may lead to death, but just as often it may manifest in the form of outcomes that are not as positive as they otherwise could or should be — Paul Kivel writes,
+
+“Over 20 years’ worth of studies show that people of color who arrive at a hospital while having a heart attack are significantly less likely to receive aspirin, beta-blocking drugs, clot-dissolving drugs, acute cardiac catheterization, angioplasty, or bypass surgery.  Race, class, and gender clearly make a difference in how patients are diagnosed and treated.”
+
+Whether those patients die at that moment, damage has been done.  The accumulated effects of structural violence on an individual will necessarily mean less health and shorter life.  Dr. Farmer frequently uses the phrase “constraint of agency,” and I believe this is a particularly apt description.  To challenge the notion that structural violence must manifest in obvious forms, such as civilians killed by bombs, or infants that die from preventable diseases, let us consider the subtle effects of distributed harm visited upon a large population in a so-called advanced country.  One such study, in 2009, concluded that more than 60 million extra Americans would be alive — that is, 60 million Americans died prematurely — due to the shorter life expectancies visited upon those of us in the United States.
+
+It may help some readers to first think about structural barriers or structural inequality, and then extend that concept to structural harm. If a citizen cannot receive government services because she cannot read the language the forms are printed in, that’s a structural barrier. If an immigrant seeking asylum cannot renew his business license and loses his livelihood because he fell through the cracks in a state law, here we see more structural inequality.  It is not hard to imagine how these sort of structural inequalities lead to harm.  The harm may be difficult to see, but it’s still there.
+
+Consider that approximately 100,000 African Americans will die every year simply because they are black; if they received the same social advantages that whites do, they wouldn’t have died — death is about as violent as you can get.  A more recent study found 291,000 deaths attributable (in the US, in the year 2000) to poverty and income inequality, two social conditions that are closely tied to structural violence.
+
+When tens of thousands of farmers in Uganda are illegally dispossessed — their homes and plantations burned — by an international forestry company, here is a form of structural violence.  And it stings all the more when the forestry firm closes down and lays off its 500 Ugandan workers.
+
+When a family mines the land informally, too mired in poverty to afford to move away, and a landslide crushes their house, maybe with a few relatives inside, that’s structural violence.
+
+When a Peruvian shantytown burns, people lose what little they owned, some of them burn alive, from a fire started due to improvised and unventilated indoor cooking.  And a local fire department doesn’t exist because this shantytown is decades away from infrastructure that much of the ‘developed’ world enjoys.  That’s structural violence.  Did the shantytown kill them?  The lack of fire department?  The improvised indoor cooking?  The situation is complex, but the harm is there and it is structural violence.
+
+The word “violence” rightly conveys the implication of the harm caused. Gunshot wounds (including suicides) kill about 30,000 Americans every year, and a substantial portion of our society would like to limit gun access, or even outlaw guns entirely, yet how loud are the voices against a violence that kills — in just one example above — at least three times as many Americans every year? This is why I think it’s important to speak of structural violence.  The number of murders in the US amount to around 30 per day.  The number of babies who die in their first year of life, what academics call “infant mortality”, amounts to a little more than double that.  There are many political groups that campaign to reduce the murder rate within the US, yet I know of no group committed to reducing our infant mortality rate.  Most of these infant deaths are from causes I would ascribe to structural violence.  The infant mortality rate for black babies is double that of white babies.  Does a black baby somehow “deserve” to die twice as much as a white baby?  Obviously no baby should die.  So why do black babies die at twice the rate of white babies, and why do all our infants die at a rate far higher than other developed nations?  If you’d like to look at the basic data (for 2011), see page 32 here, or for more detailed data (on 2010) see Table 21 here (about 95% of the way to the end of the document).
+
+For me, the point of the term “structural violence” is to act as an umbrella to encapsulate many different forms of various social and institutional failings that have real, if not always immediately appreciable consequences in peoples’ lives.  I hope the content of this site can help you to develop your own ideas on what is or is not structural violence, and what can be done to work for a more just and egalitarian world.  If you’re curious who runs this site, here is a short page explaining who I am.  My contact info is near the bottom.
+				</textarea>
+				<p>
+					<span class="text">
+						<span id="word-count"></span> words,
+						<span id="aspw"></span> avg. syllables per word
+					</span>
+				</p>
+				<div class="proceed">
+					<a class="button big" id="start-button">
+						<span class="text">Start Spreading</span>
+					</a>
+				</div>
+			</div>
+			<div id="main-screen-bottom" class="container">
+				<h3>
+					<span class="text">
+						Spreddy Controls
+					</span>
+				</h3>
+				<p>
+					<span class="text">
+						Based on your current settings, you'll get through the entire text in
+						<span id="duration-calc"></span>.
+						Your average rate is <span id="wpm"></span> words per minute.
+					</span>
+				</p>
+				<div class="module-unit">
+					<h4>
+						<span class="text">
+							Typeface Configuration
+						</span>
+					</h4>
+					<span class="text">
+						Size:
+					</span>
+					<input type="range" min="1" max="9" value="5" id="font-size">
+					<span class="text">
+						Thiccness:
+					</span>
+					<input type="range" min="1" max="9" value="4" id="font-weight">
+					<span class="text">
+						Edge Spacing (if previous/next words are enabled):
+					</span>
+					<input type="range" min="1" max="10" value="5" id="gap" class="last">
+				</div>
+				<div class="module-unit">
+					<h4>
+						<span class="text">
+							Speed (60spm &ndash; 1200spm)
+						</span>
+					</h4>
+					<input type="range" min="0" max="100" value="50" id="speed">
+					<p>
+						<span class="text">
+							Single syllables per minute: <span id="spm"></span>
+						</span>
+					</p>
+				</div>
+				<div class="module-unit">
+					<h4>
+						<span class="text">
+							Short/Long Words Time Balance
+						</span>
+					</h4>
+					<span class="text">
+						Linear scale:
+					</span>
+					<input type="range" min="0" max="100" value="75" id="scale">
+					<span class="text">
+						Gamma:
+					</span>
+					<input type="range" min="-100" max="100" value="0" id="exp">
+					<p>
+						<span class="text">
+							1-syllable word: <span id="single-syllable"></span> seconds
+						</span>
+					</p>
+					<p>
+						<span class="text">
+							2-syllable word: <span id="double-syllable"></span> seconds
+						</span>
+					</p>
+					<p>
+						<span class="text">
+							3-syllable word: <span id="triple-syllable"></span> seconds
+						</span>
+					</p>
+					<p>
+						<span class="text">
+							4-syllable word: <span id="quadruple-syllable"></span> seconds
+						</span>
+					</p>
+					<p>
+						<span class="text">
+							5-syllable word: <span id="quintuple-syllable"></span> seconds
+						</span>
+					</p>
+				</div>
+				<div class="module-unit">
+					<h4>
+						<span class="text">
+							Additional Flags
+						</span>
+					</h4>
+					<p>
+						<span class="text">
+							Assume that 4-digit numbers in the range 1500&ndash;2100 with no comma are years<br>
+							<small>
+								E.g. 1869 is interpereted as &ldquo;eighteen sixty-nine&rdquo; &mdash; 5 syllables; instead of &ldquo;one thousand, eight hundred, sixty-nine&rdquo; &mdash; 9 syllables.
+							</small>
+						</span>
+					</p>
+					<hr>
+					<p>
+						<span class="text">
+							Condense consecutive monosyllabic words into chunks<br>
+							<small>
+								E.g. &ldquo;It is a&rdquo; appears all at once instead of 3 separate.
+							</small>
+						</span>
+					</p>
+					<hr>
+					<p>
+						<span class="text">
+							Show previous and next words<br>
+							<small>
+								This can help you stay synced.
+							</small>
+						</span>
+					</p>
+					<hr>
+					<p>
+						<input type="checkbox" id="no-colors" checked>
+						<span class="text">
+							Flash Text<br>
+							<small>
+								This can help you stay focused and talk even quicker. It also lets you recognize when the same word repeats.
+							</small>
+						</span>
+					</p>
+					<hr>
+					<p>
+						<span class="text">
+							Ben Shapiro Mo Bamba<br>
+							<small>
+								Turn off this switch if you're actually serious about debate.
+							</small>
+						</span>
+					</p>
+				</div>
+			</div>
+		</section>
+	</main>
+	<script
+  	src="https://code.jquery.com/jquery-3.3.1.min.js"
+  	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  	crossorigin="anonymous"></script>
+	<script>
+
+	const dictionary = {
+		allCapsExceptions: [ // Do not count each letter as a syllable
+			'NATO',
+			'MAGA',
+			'LEGO',
+			'NAFTA',
+			'ASEAN',
+			'NASA',
+			'VISA'
+		],
+		allLowerCaseExceptions: [ // Pronounce each letter
+			'http',
+			'https'
+		],
+		customSyllableCounts: {
+			'w/' : 1,
+			'w/o' : 2,
+			'i/o' : 2,
+			'era' : 2
+		}
+	};
+
+	function getSPM() {
+		let min = 60;
+		let max = 1200;
+		let offsetConstant = min / max;
+		return Math.round(
+			(($('#speed').val() / 100 + offsetConstant) ** 2 - offsetConstant ** 2) * (1 / ((1 + offsetConstant) ** 2 - offsetConstant ** 2)) * (max - min) + min
+		);
+	}
+
+	function loadChunk(data, chunkIndex, elapsed, colorCode) {
+		let colorCycle = [
+			'FF8A80',
+			'84FFFF',
+			'EA80FC',
+			'B9F6CA',
+			'FF80AB',
+			'A7FFEB',
+			'B388FF',
+			'F4FF81',
+			'8C9EFF',
+			'FFFF8D',
+			'82B1FF',
+			'FFD180',
+			'80D8FF',
+			'FF9E80',
+			'CCFF90',
+			'FFE57F',
+			'FFFFFF'
+		];
+
+		let startTime = Date.now();
+		if (chunkIndex >= data.length - 1) return false;
+
+		$('#followed-by').html(data[chunkIndex - 1][0]);
+		$('article').html(data[chunkIndex][0]);
+		$('#following').html(data[chunkIndex + 1][0]);
+
+		let thisWordSyllables = data[chunkIndex][1];
+		elapsed += getFrameDuration(thisWordSyllables) * 100;
+		$('progress').val(elapsed);
+
+		$('article').css('color', '#' + colorCycle[colorCode]);
+		colorCode = (colorCode + 1) % colorCycle.length;
+
+		if (!$('#no-colors').is(':checked')) $('article').css('color', 'white');
+
+		chunkIndex += 1;
+
+		setTimeout(function () { loadChunk(data, chunkIndex, elapsed, colorCode) }, Math.max(10, getFrameDuration(thisWordSyllables) * 1000 - (Date.now() - startTime)));
+	}
+
+	$('#go-button').on('click', function () {
+		$('#splash-panel').css('left', '-100vw');
+	});
+	$('#start-button').on('click', function () {
+		$('#speech-player').removeAttr('hidden');
+		$('#main-screen-top').attr('hidden', '');
+
+		let data = bounce();
+		$('html, body').css('background-color', '#242A2D');
+		loadChunk(data, 1, 1, 0);
+	});
+
+	function getFrameDuration(syllableCount) {
+		return Math.round(((60 / getSPM()) * ((syllableCount - 1) * $('#scale').val() / 100 + 1)) ** ((parseInt($('#exp').val()) + 166.667) / 133.333) * 100) / 100;
+	}
+
+	function countSyllables(word) {
+		if (!isNaN(parseInt(word))) return 1; // TODO: convert number to word to calc syllables
+		if (/^[A-Z]+$/.test(word)) return word.length + (word.match(/W/g) || '').length * 2; // If the word is all caps
+	  word = word.toLowerCase();
+	  // if (word === 'w') return 3; // hmm, what about " w/ for with? "
+	  if (word.length <= 3) return 1;
+    word = word.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '');
+    word = word.replace(/^y/, '');
+    return (word.match(/[aeiouy]{1,3}/g) || [null]).length;
+	}
+
+	function bounce() {
+		let text = $('textarea').val();
+		let r = /(;|\.+|,|:\s+|!+|\?+|\s'|'\s|"|\n+|\r+|“|”|\s’|’\s|-|–|—|\[|\]|\{|\}|\(|\)|\s+)/ugmi;
+		let words = (text.split(r)).filter(function (a) {return (a.length !== 0 && !r.test(a) && /\w/ugmi.test(a))});
+		let phonicsMap = [];
+		for (let word of words) {
+			phonicsMap.push([word, countSyllables(word)]);
+		}
+		let totalSyllables = phonicsMap.reduce(function (accumulator, current) { return accumulator + current[1] }, 0);
+		$('#aspw').html(Math.round(totalSyllables / Math.max(phonicsMap.length, 1) * 100) / 100);
+
+		let time = phonicsMap.reduce(function (accumulator, current) { return accumulator + getFrameDuration(current[1]) }, 0);
+		$('progress').attr('max', Math.round(time * 100));
+		
+		let seconds = Math.ceil(time);
+		let minutes = Math.floor(seconds / 60);
+		$('#duration-calc').html(minutes + ':' + (seconds - minutes * 60).toString().padStart(2, '0'));
+
+		$('#wpm').html(Math.round(words.length / (seconds / 60)));
+		$('#word-count').html(words.length);
+
+		let newPhonics = [];
+		let cache = '';
+		for (let block of phonicsMap) { // edit for even distribution
+			if (block[0].length <= 3 && block[1] === 1 && (cache.match(/ /g) || []).length <= 1) {
+				cache += block[0] + ' ';
+			}
+			else {
+				if (cache.length > 0) {
+					newPhonics.push([cache.substring(0, cache.length - 1).replace(' ', '&nbsp;'), countSyllables(cache)]);
+					cache = '';
+				}
+				newPhonics.push(block);
+			}
+		}
+		phonicsMap = newPhonics;
+
+		let blank = ['', 1];
+		phonicsMap.unshift(blank);
+		phonicsMap.push(blank);
+
+		return phonicsMap;
+	}
+
+	function globalUpdate() {
+		$('#spm').html(getSPM());
+		$('#single-syllable').html(getFrameDuration(1));
+		$('#double-syllable').html(getFrameDuration(2));
+		$('#triple-syllable').html(getFrameDuration(3));
+		$('#quadruple-syllable').html(getFrameDuration(4));
+		$('#quintuple-syllable').html(getFrameDuration(5));
+
+		bounce();
+
+		$('#duration-calc').html();
+	}
+
+	$('textarea, #speed, #scale, #exp').on('input', globalUpdate);
+	$('textarea, #speed, #scale, #exp').on('change', globalUpdate);
+	$('#font-size').on('input', function (e) {
+		$('#textbox-wrapper').css('font-size', 2 ** (parseInt($(e.target).val()) / 2) + 'rem');
+	});
+	$('#font-weight').on('input', function (e) {
+		$('#textbox-wrapper').css('font-weight', parseInt($(e.target).val()) * 100);
+	});
+	$('#gap').on('input', function (e) {
+		$('aside').css('padding', `0 ${$(e.target).val()}rem`);
+	});
+	$('.scroller').on('scroll', function(e) {
+		if ($(e.target).hasClass('scroller')) {
+			$('#scroll-pop').css('opacity', '0');
+		}
+	});
+
+	globalUpdate();
+
+	</script>
+</body>
+</html>
