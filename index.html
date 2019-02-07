@@ -12,6 +12,7 @@
 	<img src="scroll-indicator.png" id="scroll-pop">
 	<main class="scroller" id="splash-panel">
 		<section id="splash-screen">
+			<div id="backdrop"></div>
 			<div id="splash-screen-top" class="container flex">
 				<div id="lead">
 					<h1>
@@ -92,6 +93,32 @@ Irrespective of the legal or social view of pornography, it has been used in a n
 						Your average rate is <span id="wpm"></span> words per minute.
 					</span>
 				</p>
+				<div class="module-unit">
+					<div class="left x">
+						<input type="checkbox" id="anchor-letter" hidden checked>
+						<label for="anchor-letter">
+							<span class="switch-notch">
+								<span class="switch-notch-middle"></span>
+								<span class="switch-slide">
+									<span class="switch-on">ON</span><span class="switch-scrubber"></span><span class="switch-off">OFF</span>
+								</span>
+							</span>
+						</label>
+					</div>
+					<h4>
+						<span class="text">
+							Focal Point Position
+						</span>
+					</h4>
+					<span class="text">
+						Anchor letter:
+					</span>
+					<input type="range" min="1" max="9" value="3" id="anchor">
+					<span class="text">
+						Textbox alignment:
+					</span>
+					<input type="range" min="0" max="960" value="320" id="align" class="last">
+				</div>
 				<div class="module-unit">
 					<h4>
 						<span class="text">

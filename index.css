@@ -12,6 +12,9 @@
 	line-height: 1.3;
 	overflow-clip-box: padding-box !important;
 	-webkit-margin-collapse: separate;
+	image-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 html, body {
 	font-family: "Poppins", "Verdana", sans-serif;
@@ -22,18 +25,34 @@ html, body {
 	overflow: visible;
 	width: 100vw;
 	position: relative;
+	will-change: background-color;
 }
 section {
 	padding: 0 1rem;
 }
 #splash-screen {
 	background-color: black;
-	background-image:
-		linear-gradient(to bottom, transparent 0, transparent 100vh, white 100vh),
-		url("hero.jpg");
+	background-image: linear-gradient(to bottom, transparent 0, transparent 100vh, white 100vh);
 	background-size: 100% 100%, auto 100vh;
 	background-position: center top, center top;
 	background-repeat: no-repeat, no-repeat;
+	position: relative;
+}
+#backdrop {
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+	position: absolute;
+	right: 0;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	background-image: url("hero-small.jpg");
+}
+#main-panel {
+	filter: blur(1rem);
+	transition: filter 0.5s ease-out;
+	will-change: filter;
 }
 #main-screen {
 	background-image:
@@ -93,6 +112,7 @@ h4 {
 	border: solid #FB8C00;
 	border-width: 1px 1px 2px 1px;
 	transition: all 0.1s ease-out;
+	will-change: background-color, box-shadow, border-color;
 }
 .button:hover {
 	background-color: #FA6A11;
@@ -116,13 +136,17 @@ html body .button:active {
 	overflow-y: scroll;
 	overflow-x: hidden;
 	transition: left 0.5s ease-in;
+	will-change: scroll-position, left;
 }
 #splash-panel {
 	z-index: 100;
-	will-change: left;
 }
 #main-screen-top, #splash-screen-top, .button {
 	color: white;
+}
+#splash-screen-top {
+	z-index: 10;
+	position: relative;
 }
 textarea {
 	resize: none;
@@ -170,7 +194,10 @@ article {
 	z-index: 50;
 	text-shadow: 0 0 1px #212121, 0 0 1rem #212121;
 	font-family: "IBM Plex Serif", "Bookerly", "Literata", serif !important;
-	will-change: contents, color, opacity, font-weight, font-size, letter-spacing, word-spacing;
+	will-change: contents, color, opacity, font, letter-spacing, word-spacing;
+	text-align: center;
+	letter-spacing: -0.01em;
+	word-spacing: 0.01em;
 }
 progress {
 	width: 100%;
@@ -211,14 +238,10 @@ input[type='number'] {
 small {
 	display: block;
 	color: #546E7A;
+	margin-top: 0.5rem;
 }
 html body [hidden] {
 	display: none !important;
-}
-article {
-	text-align: center;
-	letter-spacing: -0.01em;
-	word-spacing: 0.01em;
 }
 #followed-by {
 	text-align: left;
@@ -272,6 +295,7 @@ hr {
 	opacity: 0.5;
 	animation: bounce 1s ease-in-out infinite;
 	transition: opacity 1s ease-in-out;
+	will-change: bottom, opacity;
 }
 @keyframes bounce {
 	0% {
@@ -316,12 +340,14 @@ input[type="checkbox"]:not(:checked) + label .switch-slide {
 	background: linear-gradient(to right, #00C853 0%, #00C853 50%, #D50000 50%, #D50000 100%);
 	left: 0;
 	transition: left 0.1s linear;
+	will-change: left;
 	position: relative;
 }
 .switch-off, .switch-on {
 	line-height: var(--diameter) !important;
 	width: calc(4rem - var(--diameter) - 2px);
 	text-align: center;
+	user-select: none !important;
 }
 .switch-notch, .switch-scrubber, .switch-notch-middle {
 	border-radius: 99999px;
@@ -337,11 +363,27 @@ input[type="checkbox"]:checked + label .switch-scrubber {
 	position: relative;
 	z-index: 10;
 	transition: background-color 0.1s ease-in-out;
+	will-change: background-color;
 }
 .left {
 	float: left;
 	margin: -0.5rem 0.5rem -0.5rem -0.25rem;
 }
-small {
-	margin-top: 0.5rem;
+.left.x {
+	margin-top: -0.25rem !important;
+}
+@media (min-width: 803px), (min-height: 478px) {
+	#backdrop {
+		background-image: url("hero-medium.jpg");
+	}
+}
+@media (min-width: 1338px), (min-height: 796px) {
+	#backdrop {
+		background-image: url("hero-big.jpg");
+	}
+}
+@media (min-width: 2006px), (min-height: 1194px) {
+	#backdrop {
+		background-image: url("hero-huge.jpg");
+	}
 }

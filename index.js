@@ -47,6 +47,7 @@ function loadChunk(data, chunkIndex, elapsed, hue) {
 
 $('#go-button').on('click', function () {
 	$('#splash-panel').css('left', '-100vw');
+	$('#main-panel').css('filter', 'blur(0)');
 });
 $('#start-button').on('click', function () {
 	$('#speech-player').removeAttr('hidden');
@@ -138,6 +139,13 @@ function globalUpdate() {
 	$('#duration-calc').html();
 }
 
+$('label').on('click', function() {
+	(new Audio("tap.wav")).play();
+});
+$('.button').on('pointerdown', function() {
+	(new Audio("action.wav")).play();
+});
+
 $('textarea, #speed, #scale, #exp, #uni-syll').on('input', globalUpdate);
 $('textarea, #speed, #scale, #exp, #uni-syll').on('change', globalUpdate);
 $('#font-size').on('input', function (e) {
@@ -152,10 +160,14 @@ $('#gap').on('input', function (e) {
 $('#gap2').on('input', function (e) {
 	$('article').css('word-spacing', `${parseInt($(e.target).val()) / 100}em`);
 });
-$('.scroller').on('scroll', function(e) {
+var fadeOutWheelIndicator = function (e) {
 	if ($(e.target).hasClass('scroller')) {
 		$('#scroll-pop').css('opacity', '0');
+		fadeOutWheelIndicator = function () {};
 	}
+}
+$('.scroller').on('scroll', function(e) {
+	fadeOutWheelIndicator(e);
 });
 
 globalUpdate();
