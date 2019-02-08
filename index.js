@@ -24,14 +24,28 @@ function getSPM() {
 	return Math.round(parseInt($('#speed').val()));
 }
 
+const humanResponseTime = 80;
+var firstWord = true;
+
 function loadChunk(data, chunkIndex, elapsed, hue) {
+
+	pauseState = null;
+
+	if (pause === true) {
+		pauseState = [...arguments];
+		return;
+	}
+
+	let stringify = function (accumulator, currentValue) {
+		return accumulator + currentValue[0] + ' ';
+	};
 
 	let startTime = Date.now();
 	if (chunkIndex >= data.length - 1) return false;
 
-	$('#followed-by').html(data[chunkIndex - 1][0]);
-	$('article').html(data[chunkIndex][0]);
-	$('#following').html(data[chunkIndex + 1][0]);
+	$('#past').html(data.slice(Math.max(chunkIndex - 100, 0), chunkIndex).reduce(stringify, ''));
+	$('article, #now').html(data[chunkIndex][0]);
+	$('#future').html(data.slice(chunkIndex + 1, Math.min(chunkIndex + 100, data.length)).reduce(stringify, ''));
 
 	let thisWordSyllables = data[chunkIndex][1];
 	elapsed += getFrameDuration(thisWordSyllables) * 100;
@@ -42,7 +56,7 @@ function loadChunk(data, chunkIndex, elapsed, hue) {
 
 	chunkIndex += 1;
 
-	setTimeout(function () { loadChunk(data, chunkIndex, elapsed, hue) }, Math.max(10, getFrameDuration(thisWordSyllables) * 1000 - (Date.now() - startTime)));
+	setTimeout(function () { loadChunk(data, chunkIndex, elapsed, hue) }, Math.max(firstWord ? (() => {firstWord = false; return humanResponseTime})() : 5, getFrameDuration(thisWordSyllables) * 1000 - (Date.now() - startTime)));
 }
 
 $('#go-button').on('click', function () {
@@ -145,11 +159,14 @@ $('label').on('click', function() {
 $('.button').on('pointerdown', function() {
 	(new Audio("action.wav")).play();
 });
+$('.button').on('pointerup', function() {
+	(new Audio("release.wav")).play();
+});
 
 $('textarea, #speed, #scale, #exp, #uni-syll').on('input', globalUpdate);
 $('textarea, #speed, #scale, #exp, #uni-syll').on('change', globalUpdate);
 $('#font-size').on('input', function (e) {
-	$('#textbox-wrapper').css('font-size', 2 ** (parseInt($(e.target).val()) / 10) + 'rem');
+	$('#textbox-wrapper').css('font-size', (parseInt($(e.target).val()) / 10) ** 2 + 'rem');
 });
 $('#font-weight').on('input', function (e) {
 	$('#textbox-wrapper').css('font-weight', parseInt($(e.target).val()) * 100);
@@ -165,9 +182,62 @@ var fadeOutWheelIndicator = function (e) {
 		$('#scroll-pop').css('opacity', '0');
 		fadeOutWheelIndicator = function () {};
 	}
-}
+};
+$('#splash-panel').on('scroll', function(e) {
+	$('#backdrop').css('background-position', `center ${parseInt($(e.currentTarget).scrollTop() / 2)}px`);
+});
 $('.scroller').on('scroll', function(e) {
 	fadeOutWheelIndicator(e);
+});
+
+var pause, pauseState;
+var keyMap = {};
+
+$(window).on('keydown', function(e) {
+	e.preventDefault();
+	keyMap[e.key] = true;
+	switch (e.key) {
+		case ' ':
+			$('footer').css({
+				'opacity' : '0.75',
+				'margin-top' : '3rem',
+				'filter' : 'blur(0)'
+			});
+			pause = true;
+			break;
+
+		case 'ArrowUp':
+			$('#speed').val(function(i, oldVal) {
+			  return Math.min(parseInt(oldVal) + 10, parseInt($('#speed').attr('max')));
+			});
+			globalUpdate();
+			break;
+
+		case 'ArrowDown':
+			$('#speed').val(function(i, oldVal) {
+			  return Math.max(parseInt(oldVal) - 10, parseInt($('#speed').attr('min')));
+			});
+			globalUpdate();
+			break;
+	}
+	return false;
+});
+
+$(window).on('keyup', function(e) {
+	keyMap[e.key] = false;
+	switch (e.key) {
+		case ' ':
+			$('footer').css({
+				'opacity' : '0',
+				'margin-top' : '0',
+				'filter' : 'blur(0.5rem)'
+			});
+			pause = false;
+			firstWord = true;
+			if (pauseState === null) return;
+			loadChunk(...pauseState);
+			break;
+	}
 });
 
 globalUpdate();

@@ -6,6 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="normalize.css">
 	<link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&amp;subset=devanagari,latin-ext" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Serif:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=cyrillic,cyrillic-ext,latin-ext,vietnamese" rel="stylesheet">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="index.css">
 </head>
 <body>
@@ -46,12 +47,35 @@
 			<div class="container flex" id="speech-player" hidden>
 				<div id="header">
 					<progress value="0" max="" min="0"></progress>
+					<footer>
+						<div class="text">
+							<span id="past-box">
+								&nbsp;
+								<span id="past"></span>
+							</span>
+							<span id="now"></span>
+							<span id="future"></span>
+						</div>
+					</footer>
 				</div>
 				<div id="textbox-wrapper">
-					<aside class="text" id="followed-by"></aside>
 					<article class="text"></article>
-					<aside class="text" id="following"></aside>
 				</div>
+				<nav>
+					<span class="button">
+						<i class="fas fa-fast-backward"></i>
+					</span><span class="button">
+						<i class="fas fa-backward"></i>
+					</span><span class="button">
+						<i class="fas fa-pause"></i>
+					</span><span class="button">
+						<i class="fas fa-undo"></i>
+					</span><span class="button">
+						<i class="fas fa-sort-amount-up"></i>
+					</span><span class="button">
+						<i class="fas fa-sort-amount-down"></i>
+					</span>
+				</nav>
 			</div>
 			<div class="container flex" id="main-screen-top">
 				<h2>
@@ -128,7 +152,7 @@ Irrespective of the legal or social view of pornography, it has been used in a n
 					<span class="text">
 						Size:
 					</span>
-					<input type="range" min="10" max="50" value="20" id="font-size">
+					<input type="range" min="15" max="50" value="25" id="font-size">
 					<span class="text">
 						Thiccness:
 					</span>
@@ -333,11 +357,11 @@ Irrespective of the legal or social view of pornography, it has been used in a n
 							</label>
 						</div>
 						<span class="text">
-							Split on Hyphens
+							Split on Hyphens/Dashes
 						</span>
 						<small>
 							<span class="text">
-								Split hyphenated words/phrases.
+								Split hyphenated words/phrases; split numbers connected with en-dashes.
 							</span>
 						</small>
 					</p>
