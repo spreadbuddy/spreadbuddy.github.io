@@ -8,6 +8,9 @@
 	<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Serif:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=cyrillic,cyrillic-ext,latin-ext,vietnamese" rel="stylesheet">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="index.css">
+	<link rel="preload" href="action.wav" as="audio">
+	<link rel="preload" href="tap.wav" as="audio">
+	<link rel="preload" href="release.wav" as="audio">
 </head>
 <body>
 	<img src="scroll-indicator.png" id="scroll-pop">
@@ -29,7 +32,9 @@
 				</div>
 				<div class="proceed">
 					<a class="button big" id="go-button">
-						<span class="text">Let's Go!</span>
+						<span class="text">
+							<i class="fas fa-play"></i>&ensp;Let's Go!
+						</span>
 					</a>
 				</div>
 			</div>
@@ -46,7 +51,7 @@
 		<section id="main-screen">
 			<div class="container flex" id="speech-player" hidden>
 				<div id="header">
-					<progress value="0" max="" min="0"></progress>
+					<progress value="0" max="1" min="0"></progress>
 					<footer>
 						<div class="text">
 							<span id="past-box">
@@ -62,17 +67,17 @@
 					<article class="text"></article>
 				</div>
 				<nav>
-					<span class="button">
+					<span class="button" id="restart" data-key="r" title="Back to beginning">
 						<i class="fas fa-fast-backward"></i>
-					</span><span class="button">
+					</span><span class="button" id="rewind" data-key="ArrowLeft" title="Reverse">
 						<i class="fas fa-backward"></i>
-					</span><span class="button">
+					</span><span class="button" id="pause" data-key=" " title="Pause to breathe">
 						<i class="fas fa-pause"></i>
-					</span><span class="button">
+					</span><span class="button" id="exit" data-key="Backspace" title="Quit spreading">
 						<i class="fas fa-undo"></i>
-					</span><span class="button">
+					</span><span class="button" id="speedup" data-key="ArrowUp" title="Speed up">
 						<i class="fas fa-sort-amount-up"></i>
-					</span><span class="button">
+					</span><span class="button" id="slowdown" data-key="ArrowDown" title="Slow down">
 						<i class="fas fa-sort-amount-down"></i>
 					</span>
 				</nav>
@@ -80,17 +85,45 @@
 			<div class="container flex" id="main-screen-top">
 				<h2>
 					<span class="text">
-						Copy your case file &amp; paste it here.
+						<i class="fas fa-file-alt"></i>&ensp;Copy your case file &amp; paste it here.
 					</span>
 				</h2>
 				<textarea placeholder="I got hoes, calling a young nibba phone...">
-Pornography (often abbreviated porn) is the portrayal of sexual subject matter for the exclusive purpose of sexual arousal. Pornography may be presented in a variety of media, including books, magazines, postcards, photographs, sculpture, drawing, painting, animation, sound recording, writing, film, video, and video games. The term applies to the depiction of the act rather than the act itself, and so does not include live exhibitions like sex shows and striptease. The primary subjects of present-day pornographic depictions are pornographic models, who pose for still photographs, and pornographic actors or "porn stars", who perform in pornographic films. If dramatic skills are not involved, a performer in pornographic media may also be called a model.
+Being able to nose breathe is something many individuals take for granted. Not only does most normal breathing takes place through the nasal cavity, nasal breathing is the only physiologically normal breathing pattern seen in humans. 
 
-Various groups within society have considered depictions of a sexual nature immoral, addictive, and noxious, labeling them pornographic, and attempting to have them suppressed under obscenity and other laws, with varying degrees of success. Such works have also often been subject to censorship and other legal restraints to publication, display, or possession, leading in many cases to their loss. Such grounds, and even the definition of pornography, have differed in various historical, cultural, and national contexts.
+Any obstruction within the nasal cavity can be a source of discomfort and have a significant impact on daily life. Nasal airway obstructions narrow and block the nasal passages and prevent the comfortable flow of air in and out of the nose. A nasal obstruction can occur because of inflammation and swelling of the nasal passages and sinuses (e.g. nasal allergies, sinusitis) or structural abnormalities in the nose (e.g. septum deviation, nasal polyps, enlarged adenoids) (Sinha & Guilleminault, 2010).
 
-Social attitudes towards the discussion and presentation of sexuality have become more tolerant in Western countries, and legal definitions of obscenity have become more limited, notably beginning in 1969 with Blue Movie by Andy Warhol, the first adult erotic film depicting explicit sex to receive wide theatrical release in the United States, and the subsequent Golden Age of Porn (1969-1984), leading to an industry for the production and consumption of pornography in the latter half of the 20th century. The introduction of home video and the Internet saw a boom in the worldwide porn industry that generates billions of dollars annually. Commercialized pornography accounts for over US$2.5 billion in the United States alone, including the production of various media and associated products and services. The general porn industry is between $10-$12 billion in the U.S. In 2006, the world pornography revenue was 97 billion dollars. This industry employs thousands of performers along with support and production staff. It is also followed by dedicated industry publications and trade groups as well as the mainstream press, private organizations (watchdog groups), government agencies, and political organizations. More recently, sites such as Pornhub, RedTube, and YouPorn, in addition to much pirated porn posted by individuals, have served as repositories for home-made or semi-professional pornography, made available free by its creators (who could be called exhibitionists). They present a significant challenge to the commercial pornographic film industry.
+Far from “just a blocked nose,” a nasal airway obstruction can disrupt an individual’s ability to breathe, speak, eat, exercise and sleep. Left untreated, nasal airway obstruction is a primary cause of chronic obligate mouth breathing, which has been associated with a deleterious health consequences for children and adults alike (Page & Mahony, 2010).
 
-Irrespective of the legal or social view of pornography, it has been used in a number of contexts. It is used, for example, at fertility clinics to stimulate sperm donors. Some couples use pornography at times for variety and to create a sexual interest or as part of foreplay. There is also some evidence that pornography can be used to treat voyeurism.
+Mouth breathing is not as innocent as many people may think. Though it is natural to partially breathe through the mouth during speech or to maximise air intake when the physiological demand is increased (e.g. during strenuous activity or exercise), the mouth is not actually intended to participate in normal respiration. The function of the oral cavity, or mouth, primarily revolves around speaking and eating, and breathing when nasal respiratory function is inadequate (Lipworth & White, 2000).
+
+There are a number of potentially serious health consequences associated with mouth breathing. Breathing through the mouth instead of the nose upsets the normal balance between the structure and intended functions of the oral cavity. When left untreated individuals can develop craniofacial growth abnormalities, dental and orthodontic problems, skeletal and postural changes, sleeping difficulties, exacerbation of asthma and various other physiological and social health issues (Page & Mahony, 2010).
+
+Research shows open mouth breathing can adversely affect the growth and development of the face and jaws by altering the normal positioning of the tongue and lower jaw. When nasal respiratory function is normal, the mouth usually remains closed with the tongue resting in contact with the palate (roof of the mouth). In this position the tongue exerts a lateral force which assists to shape the jaw. The teeth erupt around the tongue producing the normal healthy arch form (Flutter, 2006: Page & Mahony, 2010). 
+
+It is not possible to breathe through the mouth and have the tongue rest in the palate simultaneously. To enable breathing the mouth must be open and the tongue drop to the floor. This is problematic, particularly for growing children, as the tongue can no longer provide the "mould" for the upper jaw and teeth to form around (Flutter, 2006). It is quite characteristic of mouth breathers to have a narrow, high arched palate and small underdeveloped top jaw, and subsequently display a narrow face structure, overcrowding of teeth and jaw misalignment (Sinha and Guilleminault, 2010). 
+
+During nasal breathing the jaws and mouth tend to naturally remain closed. For chronic mouth breathers though, it is necessary the mouth remains open for extended lengths of time. This causes the downward backward movement of the lower jaw and further contributes to jaw misalignment and long-faced growth patterns. Not surprisingly, mouth breathing is commonly associated with orthodontic abnormalities.
+
+It is quite typical for mouth breathers to tilt their heads backwards to open the airway and maximise air intake. This is because mouth breathing is less efficient than nasal respiration at introducing oxygen into the lungs and bloodstream. Nevertheless, there is no distortion in one part of the body that is not reflected throughout the body. Any head posture where the head is not held level for example, can distort the bones in the skull, including the upper and lower jaws (Flutter, 2006). 
+
+Poor head posture and jaw misalignment also affect how the head and spine balance in relation to gravity (Flutter, 2016; Zusko, 2010). When any part of the body is out of alignment with the other parts, there is often a compensating effect throughout the postural chain. In order to maintain the balance of the whole structure, the body must adjust itself. This can involve muscles in the neck, shoulders, back, pelvis, legs and feet. Though often not thought as a health problem, poor posture can place unnecessary wear and tear on joints and over time, be as damaging as an injury (Zusko, 2010).
+
+Dry mouth is a common complaint among chronic mouth breathers. Breathing through the mouth reduces saliva production and increases saliva evaporation. Not only is dry mouth uncomfortable, alterations to salivary patterns can affect an individual's oral hygiene and dental health. Saliva plays an important role in the self-cleaning of the mouth, neutralising acids and washing away bacteria. With reduced saliva flow, chronic mouth breathers are at increased risk for tooth decay, cavities, gum disease and bad breath (Motta et al., 2011).
+
+Mouth breathing subsequent to nasal airway obstruction is a primary cause of sleep apnoea (pauses in breathing during sleep) (Jefferson, 2010). During open mouthed breathing the lower jaw drops and reduces the diameter of the pharyngeal airway (throat). The airway becomes either partially or completely obstructed and causes individuals to either intermittently or repeatedly briefly stop breathing during sleep. Each time airflow is blocked the brain is deprived of oxygen. Lack of oxygen triggers the brain to arouse the individual so they can resume breathing. Sleep can be interrupted many times each night.
+
+Sleep disturbance is common among chronic mouth breathers. Mouth breathing is less efficient than nasal respiration at introducing oxygen into the lungs and bloodstream (Jefferson, 2010). This affects sleep because low blood oxygen concentrations cause the brain to remain in a more aroused state. Being more aroused interferes with the normal sleep cycle. Individuals tend to remain in light sleep for longer periods and be deprived of deep, restorative sleep.
+
+Abnormal facial and dental development can also contribute to poor sleep attainment by making breathing more difficult while laying down. Irritation from drying of the oral mucosa and night sweating associated with the increased effort required to breathe and maintain blood oxygen levels, are additional reasons individuals experience sleep disturbance (Sinha & Guilleminault, 2010).
+
+The importance of sleep to physical and psychological health cannot be overestimated. Sleep is vital for growth and development. For children, research has shown sleep to be linked to growth, development, academic performance, concentration and behavioural problems (Jefferson, 2010).
+
+Nasal airway obstruction and mouth breathing can be very dangerous for individuals with asthma. When breathing through the mouth air is not warmed, humidified or filtered nearly as effectively as when air is breathed in through the nose. Therefore the risk for air which is cold, dry or which contains irritants, pollutants or allergens, entering the lungs is increased. By allowing cold, dry and/or unfiltered air to enter the lungs more easily, mouth breathing increases the risk individuals (with asthma) will have poor asthma control and experience asthma attacks (Lipworth & White, 2000).
+
+Nasal airway obstruction is far from “just a blocked nose.” Nasal breathing is the only physiologically normal breathing pattern seen in humans. Therefore ensuring adequate nasal respiratory function is maintained is very important to health.
+
+Mouth breathing is not an acceptable substitute for nasal breathing. Mouth breathing is associated with numerous deleterious health consequences for adults and children alike. Being aware of the signs and symptoms of nasal airway obstruction and mouth breathing is necessary to enable early intervention and ensure optimal management. Re-establishing nasal breathing is particularly relevant for children as left untreated, mouth breathing can significantly impact growth and development.
 				</textarea>
 				<p>
 					<span class="text">
@@ -100,14 +133,16 @@ Irrespective of the legal or social view of pornography, it has been used in a n
 				</p>
 				<div class="proceed">
 					<a class="button big" id="start-button">
-						<span class="text">Start Spreading</span>
+						<span class="text">
+							<i class="fas fa-hourglass-start"></i>&ensp;Start Spreading
+						</span>
 					</a>
 				</div>
 			</div>
 			<div id="main-screen-bottom" class="container">
 				<h3>
 					<span class="text">
-						SpreadBuddy Controls
+						<i class="fas fa-tools"></i>&ensp;SpreadBuddy Controls
 					</span>
 				</h3>
 				<p>
@@ -118,7 +153,7 @@ Irrespective of the legal or social view of pornography, it has been used in a n
 					</span>
 				</p>
 				<div class="module-unit">
-					<div class="left x">
+					<div class="right">
 						<input type="checkbox" id="anchor-letter" hidden checked>
 						<label for="anchor-letter">
 							<span class="switch-notch">
@@ -131,7 +166,7 @@ Irrespective of the legal or social view of pornography, it has been used in a n
 					</div>
 					<h4>
 						<span class="text">
-							Focal Point Position
+							<i class="fas fa-i-cursor"></i>&emsp;Focal Point Position
 						</span>
 					</h4>
 					<span class="text">
@@ -146,7 +181,7 @@ Irrespective of the legal or social view of pornography, it has been used in a n
 				<div class="module-unit">
 					<h4>
 						<span class="text">
-							Typeface Configuration
+							<i class="fas fa-text-height"></i>&emsp;Typeface Configuration
 						</span>
 					</h4>
 					<span class="text">
@@ -169,7 +204,7 @@ Irrespective of the legal or social view of pornography, it has been used in a n
 				<div class="module-unit">
 					<h4>
 						<span class="text">
-							Speed (60 FSSPM &ndash; 1200 FSSPM)
+							<i class="fas fa-user-ninja"></i>&emsp;Speed (60 FSSPM &ndash; 1200 FSSPM)
 						</span>
 					</h4>
 					<input type="range" min="60" max="1200" value="500" id="speed">
@@ -187,7 +222,7 @@ Irrespective of the legal or social view of pornography, it has been used in a n
 				<div class="module-unit">
 					<h4>
 						<span class="text">
-							Multi-Syllable Timebend
+							<i class="fas fa-sliders-h"></i>&emsp;Multi-Syllable Timebend
 						</span>
 					</h4>
 					<span class="text">
@@ -229,9 +264,9 @@ Irrespective of the legal or social view of pornography, it has been used in a n
 					</p>
 				</div>
 				<div class="module-unit">
-					<h4>
+					<h4 class="big-gap">
 						<span class="text">
-							Additional Flags
+							<i class="fas fa-sitemap"></i>&emsp;Additional Flags
 						</span>
 					</h4>
 					<p>

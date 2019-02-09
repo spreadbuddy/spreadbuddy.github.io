@@ -20,16 +20,30 @@ const dictionary = {
 	}
 };
 
+function begin() {
+	$('#speech-player').removeAttr('hidden');
+	$('#main-screen-top').attr('hidden', '');
+
+	let data = bounce();
+	$('html, body').css('background-color', '#242A2D');
+	loadChunk(data, 1, 1, 0);
+}
+
 function getSPM() {
-	return Math.round(parseInt($('#speed').val()));
+	return Math.round(toInt($('#speed').val()));
 }
 
 const humanResponseTime = 80;
 var firstWord = true;
 
-function loadChunk(data, chunkIndex, elapsed, hue) {
+function loadChunk(data, chunkIndex, hue) {
 
 	pauseState = null;
+
+	if (restart) {
+		chunkIndex = 0;
+		restart = false;
+	}
 
 	if (pause === true) {
 		pauseState = [...arguments];
@@ -41,43 +55,60 @@ function loadChunk(data, chunkIndex, elapsed, hue) {
 	};
 
 	let startTime = Date.now();
-	if (chunkIndex >= data.length - 1) return false;
+	if (chunkIndex >= data.length - 1) quit = true;
+
+	if (quit) {
+		pauseState = null;
+		restart = false;
+		pause = false;
+		quit = false;
+		exit();
+		return;
+	}
 
 	$('#past').html(data.slice(Math.max(chunkIndex - 100, 0), chunkIndex).reduce(stringify, ''));
 	$('article, #now').html(data[chunkIndex][0]);
 	$('#future').html(data.slice(chunkIndex + 1, Math.min(chunkIndex + 100, data.length)).reduce(stringify, ''));
 
 	let thisWordSyllables = data[chunkIndex][1];
-	elapsed += getFrameDuration(thisWordSyllables) * 100;
-	$('progress').val(elapsed);
+	$('progress').val(calcTimeProgress(chunkIndex, data));
 
-	$('article').css('color', $('#no-colors').is(':checked') ? `hsl(${hue}, 100%, 90%)` : 'white');
+	$('article').css('color', $('#no-colors').is(':checked') ? `hsl(${hue}, 100%, 80%)` : 'white');
 	hue = (hue + 151) % 360;
 
-	chunkIndex += 1;
+	chunkIndex += keyMap['ArrowLeft'] ? -1 : 1;
+	if (chunkIndex <= 0) chunkIndex = 1;
 
-	setTimeout(function () { loadChunk(data, chunkIndex, elapsed, hue) }, Math.max(firstWord ? (() => {firstWord = false; return humanResponseTime})() : 5, getFrameDuration(thisWordSyllables) * 1000 - (Date.now() - startTime)));
+	setTimeout(function () { loadChunk(data, chunkIndex, hue) }, Math.max(firstWord ? (() => {firstWord = false; return humanResponseTime})() : 5, getFrameDuration(thisWordSyllables) * 1000 - (Date.now() - startTime)));
 }
 
 $('#go-button').on('click', function () {
 	$('#splash-panel').css('left', '-100vw');
+	$('#splash-panel').on('transitionend', function(e) {
+		if ($(e.target).is('#splash-panel')) $(e.currentTarget).css('display', 'none');
+	});
 	$('#main-panel').css('filter', 'blur(0)');
 });
-$('#start-button').on('click', function () {
-	$('#speech-player').removeAttr('hidden');
-	$('#main-screen-top').attr('hidden', '');
+$('#start-button').on('click', begin);
 
-	let data = bounce();
-	$('html, body').css('background-color', '#242A2D');
-	loadChunk(data, 1, 1, 0);
-});
+const toInt = parseInt;
+
+var restart = false;
+var quit = false;
+
+function calcTimeProgress(chunkIndex, chunkArray) {
+	const syllableSum = (accumulator, current) => accumulator + getFrameDuration(current[1]);
+	let passed = chunkArray.slice(0, chunkIndex + 1).reduce(syllableSum, 0);
+	let comingUp = chunkArray.slice(chunkIndex + 1, chunkArray.length).reduce(syllableSum, 0);
+	return passed / (passed + comingUp);
+}
 
 function getFrameDuration(syllableCount) {
 	let x = syllableCount;
-	let a = parseInt($('#exp').val()) / 100;
-	let b = parseInt($('#scale').val()) / 100;
-	let c = parseInt($('#uni-syll').val()) / 100;
-	let frameDuration = 60 / parseInt($('#speed').val()) * (
+	let a = toInt($('#exp').val()) / 100;
+	let b = toInt($('#scale').val()) / 100;
+	let c = toInt($('#uni-syll').val()) / 100;
+	let frameDuration = 60 / toInt($('#speed').val()) * (
 		5 / 3 * (((x + 10 * (x / (2 + 5 * a)) ** (1 - a / 2)) - 2) / (10 * (a + 1) * (b + 1)) - ((1 + 10 * (1 / (2 + 5 * a)) ** (1 - a / 2)) - 2) / (10 * (a + 1) * (b + 1))) + 1
 	);
 	frameDuration += ((x === 1) ? (getFrameDuration(2) - frameDuration) * c : 0);
@@ -86,7 +117,7 @@ function getFrameDuration(syllableCount) {
 }
 
 function countSyllables(word) {
-	if (!isNaN(parseInt(word))) return 1; // TODO: convert number to word to calc syllables
+	if (!isNaN(toInt(word))) return 1; // TODO: convert number to word to calc syllables
 	if (/^[A-Z]+$/.test(word)) return word.length + (word.match(/W/g) || '').length * 2; // If the word is all caps
   word = word.toLowerCase();
   // if (word === 'w') return 3; // hmm, what about " w/ for with? "
@@ -108,7 +139,6 @@ function bounce() {
 	$('#aspw').html(Math.round(totalSyllables / Math.max(phonicsMap.length, 1) * 100) / 100);
 
 	let time = phonicsMap.reduce(function (accumulator, current) { return accumulator + getFrameDuration(current[1]) }, 0);
-	$('progress').attr('max', Math.round(time * 100));
 	
 	let seconds = Math.ceil(time);
 	let minutes = Math.floor(seconds / 60);
@@ -153,29 +183,41 @@ function globalUpdate() {
 	$('#duration-calc').html();
 }
 
+function exit() {
+	$('#speech-player').attr('hidden', '');
+	$('#main-screen-top').removeAttr('hidden');
+	$('html, body').css('background-color', '#546E7A');
+}
+
+function playSound(fileName) {
+	let audioObject = new Audio(fileName);
+	audioObject.volume = 0.5;
+	audioObject.play();
+}
+
 $('label').on('click', function() {
-	(new Audio("tap.wav")).play();
+	playSound('tap.wav');
 });
 $('.button').on('pointerdown', function() {
-	(new Audio("action.wav")).play();
+	playSound('action.wav');
 });
 $('.button').on('pointerup', function() {
-	(new Audio("release.wav")).play();
+	playSound('release.wav');
 });
 
 $('textarea, #speed, #scale, #exp, #uni-syll').on('input', globalUpdate);
 $('textarea, #speed, #scale, #exp, #uni-syll').on('change', globalUpdate);
 $('#font-size').on('input', function (e) {
-	$('#textbox-wrapper').css('font-size', (parseInt($(e.target).val()) / 10) ** 2 + 'rem');
+	$('#textbox-wrapper').css('font-size', (toInt($(e.target).val()) / 10) ** 2 + 'rem');
 });
 $('#font-weight').on('input', function (e) {
-	$('#textbox-wrapper').css('font-weight', parseInt($(e.target).val()) * 100);
+	$('#textbox-wrapper').css('font-weight', toInt($(e.target).val()) * 100);
 });
 $('#gap').on('input', function (e) {
-	$('article').css('letter-spacing', `${parseInt($(e.target).val()) / 100}em`);
+	$('article').css('letter-spacing', `${toInt($(e.target).val()) / 100}em`);
 });
 $('#gap2').on('input', function (e) {
-	$('article').css('word-spacing', `${parseInt($(e.target).val()) / 100}em`);
+	$('article').css('word-spacing', `${toInt($(e.target).val()) / 100}em`);
 });
 var fadeOutWheelIndicator = function (e) {
 	if ($(e.target).hasClass('scroller')) {
@@ -183,9 +225,16 @@ var fadeOutWheelIndicator = function (e) {
 		fadeOutWheelIndicator = function () {};
 	}
 };
-$('#splash-panel').on('scroll', function(e) {
-	$('#backdrop').css('background-position', `center ${parseInt($(e.currentTarget).scrollTop() / 2)}px`);
-});
+
+function bokehHeroBackground() {
+	let scrollPosition = toInt($('#splash-panel').scrollTop());
+	$('#backdrop').css({
+		'background-position' : `center ${scrollPosition / 2}px`,
+		'filter' : `blur(calc(1rem * ${(scrollPosition / $(window).height()) ** 2}))`
+	});
+}
+$('#splash-panel').on('scroll wheel', bokehHeroBackground);
+$(window).on('resize', bokehHeroBackground);
 $('.scroller').on('scroll', function(e) {
 	fadeOutWheelIndicator(e);
 });
@@ -195,49 +244,86 @@ var keyMap = {};
 
 $(window).on('keydown', function(e) {
 	e.preventDefault();
+	if (keyMap[e.key] === true) return false;
 	keyMap[e.key] = true;
-	switch (e.key) {
-		case ' ':
-			$('footer').css({
-				'opacity' : '0.75',
-				'margin-top' : '3rem',
-				'filter' : 'blur(0)'
-			});
-			pause = true;
-			break;
-
-		case 'ArrowUp':
-			$('#speed').val(function(i, oldVal) {
-			  return Math.min(parseInt(oldVal) + 10, parseInt($('#speed').attr('max')));
-			});
-			globalUpdate();
-			break;
-
-		case 'ArrowDown':
-			$('#speed').val(function(i, oldVal) {
-			  return Math.max(parseInt(oldVal) - 10, parseInt($('#speed').attr('min')));
-			});
-			globalUpdate();
-			break;
-	}
+	let activeButton = $(`[data-key="${e.key}"]`);
+	activeButton.addClass('activated');
+	activeButton.trigger('pointerdown');
 	return false;
 });
 
-$(window).on('keyup', function(e) {
-	keyMap[e.key] = false;
-	switch (e.key) {
-		case ' ':
-			$('footer').css({
-				'opacity' : '0',
-				'margin-top' : '0',
-				'filter' : 'blur(0.5rem)'
-			});
+var lastTapped;
+
+function showLineGuide() {
+	$('footer').css({
+		'opacity' : '0.75',
+		'margin-top' : '3rem',
+		'filter' : 'blur(0)',
+		'font-size' : '1.5rem'
+	});
+}
+function hideLineGuide() {
+	$('footer').css({
+		'opacity' : '0',
+		'margin-top' : '0',
+		'filter' : 'blur(0.5rem)',
+		'font-size' : '1rem'
+	});
+}
+
+$('#rewind').on('pointerdown', function () {showLineGuide();lastTapped = 'rewind'});
+
+$('#pause').on('pointerdown', function () {
+	showLineGuide();
+	pause = true;
+	lastTapped = 'pause';
+});
+$(window).on('pointerup', function () {
+	switch (lastTapped) {
+		case 'pause':
+			hideLineGuide();
 			pause = false;
 			firstWord = true;
 			if (pauseState === null) return;
 			loadChunk(...pauseState);
 			break;
+		case 'rewind':
+			hideLineGuide();
+			break;
 	}
+});
+$('#restart').on('click', function () {
+	restart = true;
+});
+$('#exit').on('click', function () {
+	quit = true;
+});
+
+setInterval(function () {
+	if (keyMap['ArrowDown'] === true) {
+		$('#speed').val(function(i, oldVal) {
+		  return Math.max(toInt(oldVal) - 10, toInt($('#speed').attr('min')));
+		});
+		globalUpdate();
+	}
+	if (keyMap['ArrowUp'] === true) {
+		$('#speed').val(function(i, oldVal) {
+		  return Math.min(toInt(oldVal) + 10, toInt($('#speed').attr('max')));
+		});
+		globalUpdate();
+	}
+}, 100);
+$('#slowdown, #speedup, #rewind').on('pointerdown pointerup', function(e) {
+	keyMap[$(e.currentTarget).attr('data-key')] = (e.type === 'pointerdown');
+});
+
+$(window).on('keyup', function(e) {
+	keyMap[e.key] = false;
+	let activeButton = $(`[data-key="${e.key}"]`);
+	activeButton.removeClass('activated');
+	activeButton.trigger('pointerup');
+	activeButton.click();
+	return false;
 });
 
 globalUpdate();
